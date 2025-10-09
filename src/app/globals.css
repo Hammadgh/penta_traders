@@ -35,12 +35,19 @@ body {
     "Apple Color Emoji", "Segoe UI Emoji";
 }
 
-/* Subtle background pattern overlay */
+/* Subtle background pattern overlay - disabled on iOS to prevent crashes */
 .bg-pattern {
   background-image:
     radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--brand-primary) 12%, transparent) 1px, transparent 1px),
     linear-gradient(to bottom, transparent, transparent);
   background-size: 18px 18px, auto;
+}
+
+/* Disable pattern on iOS */
+@supports (-webkit-touch-callout: none) {
+  .bg-pattern {
+    background-image: none !important;
+  }
 }
 
 /* Smooth scroll for anchor links */
@@ -84,6 +91,15 @@ body {
 /* Glass-like card */
 .glass {
   @apply bg-white/70 dark:bg-white/5 backdrop-blur-md border border-black/5 dark:border-white/10 shadow-lg;
+}
+
+/* Disable blur effects on iOS to prevent crashes */
+@supports (-webkit-touch-callout: none) {
+  .glass {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+  }
 }
 
 /* Fix for iOS touch events */

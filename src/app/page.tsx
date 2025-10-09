@@ -6,41 +6,42 @@ export default function Home() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showTop, setShowTop] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
+
+  // Detect iOS on mount
   useEffect(() => {
-    // iOS-optimized scroll handler
-    let lastKnownScrollY = 0;
-    let ticking = false;
-    let rafId: number | null = null;
+    const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    setIsIOS(iOS);
+  }, []);
+  useEffect(() => {
+    // Simplified scroll handler - no RAF on iOS to prevent crashes
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     
-    const onScroll = () => {
-      lastKnownScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+    if (isIOS) {
+      // Simple direct update for iOS
+      const onScroll = () => {
+        setShowTop(window.scrollY > 80);
+      };
       
+      window.addEventListener("scroll", onScroll, { passive: true });
+      return () => window.removeEventListener("scroll", onScroll);
+    }
+    
+    // Standard implementation for other devices
+    let ticking = false;
+    const onScroll = () => {
       if (!ticking) {
-        rafId = window.requestAnimationFrame(() => {
-          setShowTop(lastKnownScrollY > 80);
+        window.requestAnimationFrame(() => {
+          setShowTop(window.scrollY > 80);
           ticking = false;
-          rafId = null;
         });
-        
         ticking = true;
       }
     };
     
-    // Initial check with delay for iOS
-    setTimeout(() => {
-      setShowTop((window.scrollY || document.documentElement.scrollTop || 0) > 80);
-    }, 100);
-    
-    // Add event with passive option for better iOS performance
     window.addEventListener("scroll", onScroll, { passive: true });
-    
-    // Clean up
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (rafId) {
-        window.cancelAnimationFrame(rafId);
-      }
-    };
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -54,71 +55,71 @@ export default function Home() {
     }
   }, []);
 
-  // iOS video handling - optimized to prevent crashes
+  // iOS detection and crash prevention
   useEffect(() => {
     if (typeof window === 'undefined') return;
     
-    // Detect iOS first
+    // Detect iOS/Safari
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
+    const videoContainer = document.querySelector('.video-container') as HTMLDivElement;
     const video = document.getElementById('banner-video') as HTMLVideoElement;
     const fallback = document.getElementById('video-fallback') as HTMLDivElement;
-    const playButton = document.getElementById('play-button-overlay') as HTMLDivElement;
     
-    if (!video) return;
-
-    // On iOS, show fallback immediately to prevent crash from video loading
-    if (isIOS && fallback) {
-      fallback.style.display = 'block';
-      // Don't load video automatically on iOS to prevent memory crash
-      video.style.display = 'none';
-      
-      // Only load video on user interaction
-      const enableVideoOnIOS = () => {
-        if (playButton) playButton.style.display = 'flex';
-      };
-      
-      setTimeout(enableVideoOnIOS, 500);
+    // On iOS, completely remove video element to prevent crash
+    if (isIOS || isSafari) {
+      if (video && video.parentNode) {
+        video.parentNode.removeChild(video);
+      }
+      if (videoContainer) {
+        videoContainer.style.display = 'none';
+      }
+      if (fallback) {
+        fallback.style.display = 'block';
+      }
       return;
     }
 
-    // Non-iOS devices: standard video handling
-    video.setAttribute('webkit-playsinline', 'true');
-    video.setAttribute('playsinline', 'true');
+    // Non-iOS devices: load video normally
+    if (!video) return;
+    
     video.muted = true;
     video.loop = true;
+    video.playsInline = true;
 
     const playVideo = () => {
-      video.play().catch((e) => {
-        console.log('Video autoplay prevented:', e);
+      video.play().catch(() => {
         if (fallback) fallback.style.display = 'block';
       });
     };
 
-    // Try to play after a short delay
-    setTimeout(playVideo, 100);
-
-    video.addEventListener('error', () => {
-      console.log('Video failed to load');
-      if (fallback) fallback.style.display = 'block';
-      video.style.display = 'none';
-    }, { once: true });
+    setTimeout(playVideo, 200);
 
     return () => {
-      // Cleanup
-      video.pause();
+      if (video) video.pause();
     };
   }, []);
   useEffect(() => {
-    // iOS-optimized active nav highlight with throttling
-    const sectionIds = ["home", "about", "products", "memberships", "contact"];
-    let isThrottled = false;
-    let timeoutId: number | null = null;
-    let rafId: number | null = null;
+    // Simplified nav highlight - disable on iOS to prevent performance issues
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    if (isIOS) return; // Skip entirely on iOS
     
-    const updateActiveNav = (current: string) => {
-      // Use direct DOM manipulation instead of querySelectorAll for better iOS performance
+    const sectionIds = ["home", "about", "products", "memberships", "contact"];
+    let timeoutId: ReturnType<typeof setTimeout>;
+    
+    const updateActiveNav = () => {
+      const scrollY = window.scrollY + 120;
+      let current = "home";
+      
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= scrollY) {
+          current = id;
+        }
+      }
+      
       const navLinks = document.getElementsByClassName('nav-link');
       for (let i = 0; i < navLinks.length; i++) {
         navLinks[i].classList.remove('nav-link--active');
@@ -131,46 +132,15 @@ export default function Home() {
     };
     
     const onScrollActive = () => {
-      // Skip if already processing a scroll event
-      if (isThrottled) return;
-      
-      isThrottled = true;
-      
-      // Use requestAnimationFrame for better iOS performance
-      rafId = window.requestAnimationFrame(() => {
-        const scrollY = (window.scrollY || document.documentElement.scrollTop || 0) + 120;
-        let current = "home";
-        
-        // Find current section
-        for (const id of sectionIds) {
-          const el = document.getElementById(id);
-          if (el && el.offsetTop <= scrollY) {
-            current = id;
-          }
-        }
-        
-        updateActiveNav(current);
-        
-        // Reset throttle after 150ms for iOS
-        timeoutId = window.setTimeout(() => {
-          isThrottled = false;
-        }, 150);
-        
-        rafId = null;
-      });
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(updateActiveNav, 100);
     };
     
-    // Initial call with delay for iOS
-    setTimeout(onScrollActive, 200);
-    
-    // Event listener with passive option for iOS
     window.addEventListener("scroll", onScrollActive, { passive: true });
     
-    // Clean up
     return () => {
       window.removeEventListener("scroll", onScrollActive);
-      if (timeoutId) clearTimeout(timeoutId);
-      if (rafId) window.cancelAnimationFrame(rafId);
+      clearTimeout(timeoutId);
     };
   }, []);
   return (
@@ -180,14 +150,15 @@ export default function Home() {
         <div className="section-container section-container--wide grid [grid-template-columns:auto_1fr_auto] items-center py-1 md:py-2">
           <div className="flex items-center gap-3">
             <div className="relative w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16">
-        <Image
+              <Image
                 src="/Penta Traders logo.png"
                 alt="Penta Traders"
                 fill
                 className="rounded object-contain"
                 sizes="(max-width: 640px) 56px, (max-width: 768px) 64px, 80px"
-          priority
-        />
+                priority={!isIOS}
+                loading={isIOS ? "lazy" : undefined}
+              />
             </div>
           </div>
           <nav className="hidden md:flex items-center justify-center gap-6 lg:gap-7 text-base lg:text-lg font-medium text-[#023047]">
@@ -234,70 +205,26 @@ export default function Home() {
         <section id="home" className="relative pt-16 min-h-[70vh] lg:min-h-[92vh] scroll-mt-24 lg:scroll-mt-32">
           {/* Background video with iOS compatibility */}
           <div className="absolute inset-0 overflow-hidden">
-            {/* iOS-optimized video implementation */}
-            <video
-              muted
-              loop
-              playsInline
-              preload="none"
-              {...{ "webkit-playsinline": "true" }}
-              className="w-full h-full object-cover"
-              id="banner-video"
-              style={{ 
-                objectFit: "cover"
-              } as React.CSSProperties}
-            >
-  <source src="/banner%20video.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
-
-
-
-            
-            {/* Fallback background for iOS when video fails */}
+            {/* Fallback background - shows first on iOS */}
             <div 
               className="absolute inset-0 bg-gradient-to-br from-[#023047] via-[#1a4a5c] to-[#023047]"
-              style={{ display: 'none' }}
               id="video-fallback"
+              style={{ display: 'none' }}
             />
             
-            {/* iOS Play Button Overlay */}
-            <div 
-              className="absolute inset-0 flex items-center justify-center z-20"
-              id="play-button-overlay"
-              style={{ display: 'none' }}
-            >
-              <button
-                onClick={async () => {
-                  const video = document.getElementById('banner-video') as HTMLVideoElement;
-                  const overlay = document.getElementById('play-button-overlay') as HTMLDivElement;
-                  const fallback = document.getElementById('video-fallback') as HTMLDivElement;
-                  
-                  if (video) {
-                    try {
-                      // Show video element
-                      video.style.display = 'block';
-                      // Load and play video
-                      video.load();
-                      await video.play();
-                      // Hide overlay and fallback on success
-                      if (overlay) overlay.style.display = 'none';
-                      if (fallback) fallback.style.display = 'none';
-                    } catch (error) {
-                      console.error('Failed to play video:', error);
-                      // Keep fallback visible on error
-                      video.style.display = 'none';
-                      if (overlay) overlay.style.display = 'none';
-                    }
-                  }
-                }}
-                className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-full p-6 hover:bg-white/30 transition-all duration-300 hover:scale-110"
-                aria-label="Play video"
+            {/* Video container - hidden on iOS */}
+            <div className="absolute inset-0 video-container">
+              <video
+                muted
+                loop
+                playsInline
+                preload="none"
+                className="w-full h-full object-cover"
+                id="banner-video"
+                style={{ objectFit: "cover" } as React.CSSProperties}
               >
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M8 5v14l11-7z" fill="white" />
-                </svg>
-              </button>
+                <source src="/banner%20video.mp4" type="video/mp4" />
+              </video>
             </div>
           </div>
           {/* Overlay for readability */}
