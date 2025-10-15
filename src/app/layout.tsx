@@ -14,8 +14,20 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Penta Traders – Trusted Exporter from Pakistan",
-  description:
-    "Penta Traders exports Pakistan’s finest handmade rugs, Himalayan pink salt products, and bamboo baskets to global markets.",
+  description: "Penta Traders exports Pakistan's finest handmade rugs, Himalayan pink salt products, and bamboo baskets to global markets.",
+  formatDetection: { telephone: false },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+  },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1.0,
+  maximumScale: 1.0,
+  userScalable: false,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -26,7 +38,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
