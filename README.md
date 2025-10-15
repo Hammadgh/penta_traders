@@ -1,21 +1,54 @@
-# NewPenta - Lightning Fast Next.js Setup
+# Penta Traders - Export Company Website
 
-A modern Next.js 15 project with Tailwind CSS v4, TypeScript, and Turbopack for lightning-fast development.
+A modern, responsive website for Penta Traders, a Pakistani export company specializing in authentic products from Pakistan to global markets.
 
-## 🚀 Features
+## 🚀 Live Website
 
-- **Next.js 15** - Latest version with App Router
+**Live URL**: [penta-traders.vercel.app](https://penta-traders.vercel.app)
+
+## ✨ Features
+
+### 🎬 **Video Hero Section**
+- **Animated video banner** with container ship imagery
+- **Professional gradient overlays** for text readability
+- **iPhone-optimized autoplay** with smooth performance
+- **Responsive design** across all devices
+
+### 🎨 **Modern Design**
+- **Clean, professional layout** with yellow brand colors
+- **Smooth scroll navigation** with precise section targeting
+- **Responsive grid layouts** for all screen sizes
+- **Professional typography** and spacing
+
+### 📱 **Interactive Elements**
+- **Centered navigation menu** with smooth scroll functionality
+- **Scroll-to-top button** that appears after scrolling
+- **Hover effects** and smooth transitions
+- **Mobile-optimized** touch interactions
+
+### 🏺 **Product Showcase**
+- **Handmade Rugs** - Persian inspired designs
+- **Himalayan Pink Salt Products** - Lamps, tiles, and edible salt
+- **Bamboo Baskets** - Eco-friendly and stylish
+- **Real product images** from the company's portfolio
+
+### 🏆 **Company Credentials**
+- **FBR Registration** - Federal Board of Revenue
+- **LCCI Membership** - Lahore Chamber of Commerce & Industry
+- **PCMEA Membership** - Pakistan Carpet Manufacturers & Exporters Association
+- **Professional certifications** and trade memberships
+
+## 🛠️ Technical Stack
+
+- **Next.js 15** - Latest React framework with App Router
 - **Tailwind CSS v4** - Latest version with improved performance
 - **TypeScript** - Full type safety and IntelliSense
 - **Turbopack** - Lightning-fast bundling and hot reloading
 - **ESLint** - Code linting and formatting
-- **Optimized Images** - WebP and AVIF support
-- **Dark Mode** - Built-in dark/light theme support
 
-## 🛠️ Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
-
 - Node.js 18.17 or later
 - npm, yarn, or pnpm
 
@@ -23,8 +56,8 @@ A modern Next.js 15 project with Tailwind CSS v4, TypeScript, and Turbopack for 
 
 1. Clone the repository:
 ```bash
-git clone <your-repo-url>
-cd newpenta
+git clone https://github.com/Hammadgh/penta_traders.git
+cd penta_traders
 ```
 
 2. Install dependencies:
@@ -54,125 +87,51 @@ pnpm dev
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
 - `npm run lint:fix` - Fix ESLint errors automatically
-- `npm run type-check` - Run TypeScript type checking
-- `npm run clean` - Clean build artifacts
 
-## 🎨 Styling
+## 🎨 Design Features
 
-This project uses Tailwind CSS v4 with a custom design system. The CSS variables are defined in `src/app/globals.css` and support both light and dark themes.
+### Color Scheme
+- **Primary**: Yellow (#FFC107) - Brand color
+- **Background**: White with subtle grays
+- **Text**: Dark gray/black for readability
+- **Accents**: Professional gradients and shadows
 
-### Color Palette
+### Typography
+- **Headings**: Bold, modern sans-serif fonts
+- **Body**: Clean, readable typography
+- **Responsive**: Scales appropriately on all devices
 
-- **Primary**: Blue (#3b82f6)
-- **Secondary**: Light gray (#f1f5f9)
-- **Muted**: Very light gray (#f8fafc)
-- **Accent**: Light gray (#f1f5f9)
-- **Destructive**: Red (#ef4444)
+### Layout
+- **Mobile-first**: Responsive design approach
+- **Grid systems**: Flexible layouts for content
+- **Spacing**: Consistent margins and padding
+- **Visual hierarchy**: Clear content organization
 
-### Usage
+## 🌟 Key Sections
 
-```tsx
-<div className="bg-primary text-primary-foreground p-4 rounded-lg">
-  Primary button
-</div>
-```
+1. **Hero Section** - Video banner with company introduction
+2. **About Us** - Company history and values
+3. **Export Portfolio** - Product categories and descriptions
+4. **Trade Memberships** - Professional certifications
+5. **Contact Form** - Inquiry submission
+6. **Footer** - Contact information and links
 
-## 🏗️ Project Structure
+## 📱 Mobile Optimization
 
-```
-src/
-├── app/
-│   ├── globals.css      # Global styles and Tailwind imports
-│   ├── layout.tsx       # Root layout component
-│   └── page.tsx         # Home page
-├── components/          # Reusable components (create as needed)
-└── lib/                 # Utility functions (create as needed)
-```
-
-## ⚡ Performance Optimizations
-
-- **Turbopack** - Up to 10x faster than Webpack
-- **Image Optimization** - Automatic WebP/AVIF conversion
-- **Bundle Optimization** - SWC minification
-- **Compression** - Gzip compression enabled
-- **Tree Shaking** - Unused code elimination
-
-## 🌙 Dark Mode
-
-The project includes built-in dark mode support that automatically switches based on system preferences. You can also implement manual theme switching using the CSS variables defined in `globals.css`.
-
-## 📱 Responsive Design
-
-The project is fully responsive and includes:
-- Mobile-first design approach
-- Flexible grid layouts
-- Responsive typography
-- Touch-friendly interactions
-
-## 🔧 Customization
-
-### Adding New Colors
-
-Edit the CSS variables in `src/app/globals.css`:
-
-```css
-:root {
-  --your-color: #your-hex-value;
-}
-
-@theme inline {
-  --color-your-color: var(--your-color);
-}
-```
-
-### Adding New Components
-
-Create new components in the `src/components/` directory:
-
-```tsx
-// src/components/Button.tsx
-interface ButtonProps {
-  children: React.ReactNode;
-  variant?: 'primary' | 'secondary';
-}
-
-export function Button({ children, variant = 'primary' }: ButtonProps) {
-  return (
-    <button className={`px-4 py-2 rounded-lg ${
-      variant === 'primary' 
-        ? 'bg-primary text-primary-foreground' 
-        : 'bg-secondary text-secondary-foreground'
-    }`}>
-      {children}
-    </button>
-  );
-}
-```
+- **Touch-friendly** button sizes and spacing
+- **Fast loading** with optimized images and video
+- **Smooth scrolling** with proper touch handling
+- **Responsive navigation** that works on all devices
 
 ## 🚀 Deployment
 
-### Vercel (Recommended)
+The website is deployed on Vercel and automatically updates when changes are pushed to the main branch.
 
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Deploy automatically
-
-### Other Platforms
-
-Build the project for production:
-
+### Manual Deployment
 ```bash
 npm run build
+npm run start
 ```
-
-The build artifacts will be in the `.next/` directory.
-
-## 📚 Learn More
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [TypeScript Documentation](https://www.typescriptlang.org/docs)
-- [Turbopack Documentation](https://turbo.build/pack)
 
 ## 🤝 Contributing
 
@@ -185,3 +144,14 @@ The build artifacts will be in the `.next/` directory.
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📞 Contact
+
+**Penta Traders**
+- **Address**: 2nd Floor, 27/10, Empress Road, Behind PSO Pump, Lahore, Pakistan
+- **Email**: pentatraders@hotmail.com
+- **Website**: [penta-traders.vercel.app](https://penta-traders.vercel.app)
+
+---
+
+Built with ❤️ using Next.js, Tailwind CSS, and modern web technologies.
