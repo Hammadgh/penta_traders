@@ -71,266 +71,499 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200">
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-4 md:px-6 py-3 md:py-4">
           <nav className="flex items-center justify-between">
+            {/* Logo */}
             <div className="flex items-center">
               <img 
                 src="/Penta Traders logo.png" 
                 alt="Penta Traders Logo" 
-                className="h-16 w-auto object-contain"
+                className="h-12 md:h-16 w-auto object-contain"
               />
             </div>
-            <div className="hidden md:flex items-center space-x-12">
+
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center space-x-8 xl:space-x-12">
               <a href="#home" className="text-gray-700 hover:text-gray-900 transition-colors font-medium smooth-scroll">Home</a>
               <a href="#about" className="text-gray-700 hover:text-gray-900 transition-colors font-medium smooth-scroll">About</a>
               <a href="#products" className="text-gray-700 hover:text-gray-900 transition-colors font-medium smooth-scroll">Products</a>
               <a href="#memberships" className="text-gray-700 hover:text-gray-900 transition-colors font-medium smooth-scroll">Memberships</a>
             </div>
-            <div className="hidden md:block">
-              <button className="bg-yellow-500 text-gray-800 px-6 py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors shadow-sm">
+
+            {/* Desktop CTA Button */}
+            <div className="hidden lg:block">
+              <button 
+                onClick={() => {
+                  const contactSection = document.querySelector('section:has(#contact)') || document.querySelector('form');
+                  if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="bg-yellow-500 text-gray-800 px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors shadow-sm text-sm md:text-base"
+              >
                 Request a Quote
               </button>
             </div>
-          </nav>
-        </div>
-      </header>
 
-      {/* Hero Section */}
-      <section id="home" className="relative h-screen flex items-center justify-center text-white">
-        <div 
-          className="absolute inset-0"
-          style={{
-            background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.8) 100%)',
-            zIndex: 2
-          }}
-        ></div>
-        <div className="absolute inset-0" style={{ zIndex: 1 }}>
-          {showVideo ? (
-            <video 
-              ref={videoRef}
-              autoPlay 
-              muted 
-              loop 
-              playsInline
-              preload="auto"
-              poster="/home-banner.gif"
-              className="w-full h-full object-cover"
-              style={{
-                transform: 'translateZ(0)',
-                WebkitTransform: 'translateZ(0)',
-                backfaceVisibility: 'hidden',
-                WebkitBackfaceVisibility: 'hidden'
+            {/* Mobile Menu Button */}
+            <button 
+              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              onClick={() => {
+                const menu = document.getElementById('mobile-menu');
+                if (menu) {
+                  menu.classList.toggle('hidden');
+                }
               }}
+              aria-label="Toggle mobile menu"
             >
-              <source src="/banner%20video.mp4" type="video/mp4" />
-            </video>
-          ) : (
-            <img 
-              src="/home-banner.gif" 
-              alt="Penta Traders Banner" 
-              className="w-full h-full object-cover"
-            />
-          )}
-        </div>
-        <div className="relative z-10 text-center max-w-5xl mx-auto px-4">
-          <h1 className="text-7xl md:text-9xl font-bold mb-6 text-white drop-shadow-lg">Penta Traders</h1>
-          <h2 className="text-5xl md:text-7xl font-bold mb-8 text-white drop-shadow-lg">From Pakistan to the World</h2>
-          <p className="text-2xl md:text-3xl mb-10 max-w-4xl mx-auto text-white drop-shadow-md leading-relaxed">
-            Delivering Pakistan&apos;s finest products to global markets with authenticity, quality, and reliability.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <button className="bg-yellow-500 text-gray-800 px-10 py-5 rounded-lg text-xl font-bold hover:bg-yellow-600 transition-all transform hover:scale-105 shadow-lg">
-              Explore Our Exports
+              <svg 
+                className="w-6 h-6 text-gray-700" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
             </button>
-            <button className="bg-yellow-500 text-gray-800 px-10 py-5 rounded-lg text-xl font-bold hover:bg-yellow-600 transition-all transform hover:scale-105 shadow-lg">
-              Request a Quote
-            </button>
-          </div>
-        </div>
-      </section>
+          </nav>
 
-      {/* About Us Section */}
-      <section id="about" className="py-16 bg-white scroll-mt-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-lg p-8">
-            <div className="grid md:grid-cols-2 gap-12">
-              {/* Left Column */}
-              <div>
-                <span className="text-sm text-gray-500 uppercase tracking-wide">ABOUT US</span>
-                <h2 className="text-4xl font-bold text-gray-800 mt-2 mb-6">
-                  Connecting Pakistan to Global Markets Since 2021
-                </h2>
-                <div className="space-y-4 text-gray-700">
-                  <p>
-                    Penta Traders is a registered export company based in Lahore, Pakistan, dedicated to showcasing the finest products our country has to offer to the world. We specialize in sourcing, quality assurance, and global distribution of authentic Pakistani goods.
-                  </p>
-                  <p>
-                    Registered with the Federal Board of Revenue (FBR) and a proud member of the Lahore Chamber of Commerce & Industry (LCCI), we ensure all our exports meet international standards and regulations.
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-2 mt-6">
-                  <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">On-time Delivery</span>
-                  <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">Authentic Sourcing</span>
-                  <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">Global Fulfillment</span>
-                </div>
-              </div>
-
-              {/* Right Column */}
-              <div>
-                <span className="text-sm text-gray-500 uppercase tracking-wide">Why Choose Us</span>
-                <div className="mt-4 space-y-4">
-                  <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-white text-sm">✓</span>
-                    </div>
-                    <p className="text-gray-700">Registered with FBR (Federal Board of Revenue)</p>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-white text-sm">✓</span>
-                    </div>
-                    <p className="text-gray-700">Member - Lahore Chamber of Commerce & Industry (LCCI)</p>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-white text-sm">✓</span>
-                    </div>
-                    <p className="text-gray-700">Strategic location in Lahore, Pakistan&apos;s trade hub</p>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-white text-sm">✓</span>
-                    </div>
-                    <p className="text-gray-700">Direct sourcing from local manufacturers and artisans</p>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-white text-sm">✓</span>
-                    </div>
-                    <p className="text-gray-700">Quality assurance and compliance with international standards</p>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-white text-sm">✓</span>
-                    </div>
-                    <p className="text-gray-700">Reliable logistics and shipping solutions</p>
-                  </div>
-                </div>
-              </div>
+          {/* Mobile Navigation Menu */}
+          <div id="mobile-menu" className="hidden lg:hidden mt-4 pb-4 border-t border-gray-200">
+            <div className="flex flex-col space-y-4 pt-4">
+              <a 
+                href="#home" 
+                className="text-gray-700 hover:text-gray-900 transition-colors font-medium smooth-scroll py-2 px-3 rounded-lg hover:bg-gray-50"
+                onClick={() => {
+                  const menu = document.getElementById('mobile-menu');
+                  if (menu) menu.classList.add('hidden');
+                }}
+              >
+                Home
+          </a>
+          <a
+                href="#about" 
+                className="text-gray-700 hover:text-gray-900 transition-colors font-medium smooth-scroll py-2 px-3 rounded-lg hover:bg-gray-50"
+                onClick={() => {
+                  const menu = document.getElementById('mobile-menu');
+                  if (menu) menu.classList.add('hidden');
+                }}
+              >
+                About
+              </a>
+              <a 
+                href="#products" 
+                className="text-gray-700 hover:text-gray-900 transition-colors font-medium smooth-scroll py-2 px-3 rounded-lg hover:bg-gray-50"
+                onClick={() => {
+                  const menu = document.getElementById('mobile-menu');
+                  if (menu) menu.classList.add('hidden');
+                }}
+              >
+                Products
+        </a>
+        <a
+                href="#memberships" 
+                className="text-gray-700 hover:text-gray-900 transition-colors font-medium smooth-scroll py-2 px-3 rounded-lg hover:bg-gray-50"
+                onClick={() => {
+                  const menu = document.getElementById('mobile-menu');
+                  if (menu) menu.classList.add('hidden');
+                }}
+              >
+                Memberships
+              </a>
+              <button 
+                className="bg-yellow-500 text-gray-800 px-4 py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors shadow-sm text-center mt-2"
+                onClick={() => {
+                  const menu = document.getElementById('mobile-menu');
+                  if (menu) menu.classList.add('hidden');
+                  // Scroll to contact form
+                  setTimeout(() => {
+                    const contactSection = document.querySelector('section:has(#contact)') || document.querySelector('form');
+                    if (contactSection) {
+                      contactSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }, 100);
+                }}
+              >
+                Request a Quote
+              </button>
             </div>
           </div>
         </div>
-      </section>
+      </header>
+
+       {/* Hero Section */}
+       <section id="home" className="relative h-[70vh] md:h-screen flex items-center justify-center text-white overflow-hidden">
+         <div 
+           className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/60 to-black/80"
+           style={{ zIndex: 2 }}
+         ></div>
+         <div className="absolute inset-0" style={{ zIndex: 1 }}>
+           {showVideo ? (
+             <video 
+               ref={videoRef}
+               autoPlay 
+               muted 
+               loop 
+               playsInline
+               preload="auto"
+               poster="/home-banner.gif"
+               className="w-full h-full object-cover animate-pulse-slow"
+               style={{
+                 transform: 'translateZ(0)',
+                 WebkitTransform: 'translateZ(0)',
+                 backfaceVisibility: 'hidden',
+                 WebkitBackfaceVisibility: 'hidden'
+               }}
+             >
+               <source src="/banner%20video.mp4" type="video/mp4" />
+             </video>
+           ) : (
+             <img 
+               src="/home-banner.gif" 
+               alt="Penta Traders Banner" 
+               className="w-full h-full object-cover animate-pulse-slow"
+             />
+           )}
+         </div>
+         <div className="relative z-10 text-center max-w-6xl mx-auto px-4 animate-fade-in-up">
+           <div className="mb-6">
+              <span className="inline-block px-4 py-2 bg-yellow-500/20 backdrop-blur-sm rounded-full text-yellow-400 text-sm md:text-base font-medium mb-4">
+                🇵🇰 Trusted Pakistani Exporter
+              </span>
+           </div>
+           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-6 text-yellow-500 drop-shadow-2xl animate-slide-in-left">
+             Penta Traders
+           </h1>
+           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-8 text-white drop-shadow-2xl animate-slide-in-right">
+             From Pakistan to the World
+           </h2>
+           <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl mb-12 max-w-5xl mx-auto text-white/95 drop-shadow-lg leading-relaxed animate-fade-in-up-delay">
+             Delivering Pakistan&apos;s finest products to global markets with authenticity, quality, and reliability.
+           </p>
+           <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center animate-fade-in-up-delay-2">
+             <button 
+               onClick={() => {
+                 const productsSection = document.querySelector('#products');
+                 if (productsSection) {
+                   productsSection.scrollIntoView({ behavior: 'smooth' });
+                 }
+               }}
+               className="group bg-yellow-500 text-gray-800 px-8 md:px-10 py-4 md:py-5 rounded-xl text-lg md:text-xl font-bold hover:bg-yellow-400 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 shadow-2xl hover:shadow-yellow-500/25"
+             >
+               <span className="flex items-center justify-center gap-2">
+                 Explore Our Exports
+                 <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                 </svg>
+               </span>
+             </button>
+             <button 
+               onClick={() => {
+                 const contactSection = document.querySelector('section:has(#contact)') || document.querySelector('form');
+                 if (contactSection) {
+                   contactSection.scrollIntoView({ behavior: 'smooth' });
+                 }
+               }}
+               className="group bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 px-8 md:px-10 py-4 md:py-5 rounded-xl text-lg md:text-xl font-bold hover:bg-white/20 hover:border-white/50 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 shadow-2xl"
+             >
+               <span className="flex items-center justify-center gap-2">
+                 Request a Quote
+                 <svg className="w-5 h-5 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                 </svg>
+               </span>
+             </button>
+           </div>
+         </div>
+         
+         {/* Scroll Indicator */}
+         
+       </section>
+
+       {/* About Us Section */}
+       <section id="about" className="py-16 md:py-24 bg-white scroll-mt-20">
+         <div className="container mx-auto px-4">
+           <div className="max-w-7xl mx-auto">
+             {/* About Us Card */}
+             <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-16 animate-fade-in-up border border-gray-100">
+               <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
+                 {/* Left Column - About Us */}
+                 <div className="animate-slide-in-left">
+                   <span className="text-sm text-gray-500 uppercase tracking-wide font-medium mb-4 block">ABOUT US</span>
+                   <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-8 leading-tight">
+                     Connecting Pakistan to Global Markets Since 2021
+                   </h2>
+                   
+                   <div className="space-y-6 text-gray-600 leading-relaxed">
+                     <p>
+                       Penta Traders is a registered export company headquartered in Lahore, Pakistan. Founded in 2021, we are dedicated to delivering authentic Pakistani products to global clients with a focus on quality, transparency, and timely delivery.
+                     </p>
+                     <p>
+                       Since 2021, Penta Traders has been connecting Pakistan&apos;s heritage crafts, natural resources, and sustainable products to buyers worldwide. Based in Lahore, we are officially registered with the FBR and members of the LCCI and PCMEA.
+                     </p>
+                   </div>
+
+                   <div className="flex flex-wrap gap-3 mt-8">
+                     <span className="bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-medium">On-time Delivery</span>
+                     <span className="bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-medium">Authentic Sourcing</span>
+                     <span className="bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-medium">Global Fulfillment</span>
+                   </div>
+                 </div>
+
+                 {/* Right Column - Why Choose Us */}
+                 <div className="animate-slide-in-right">
+                   <span className="text-sm text-gray-500 uppercase tracking-wide font-medium mb-6 block">Why Choose Us</span>
+                   
+                   <div className="space-y-6">
+                     <div className="flex items-start space-x-4 group">
+                       <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-300">
+                         <span className="text-white text-sm font-bold">✓</span>
+                       </div>
+                       <p className="text-gray-700 leading-relaxed group-hover:text-gray-900 transition-colors">Registered with FBR</p>
+                     </div>
+                     <div className="flex items-start space-x-4 group">
+                       <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-300">
+                         <span className="text-white text-sm font-bold">✓</span>
+                       </div>
+                       <p className="text-gray-700 leading-relaxed group-hover:text-gray-900 transition-colors">Member - Lahore Chamber of Commerce & Industry (LCCI)</p>
+                     </div>
+                     <div className="flex items-start space-x-4 group">
+                       <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-300">
+                         <span className="text-white text-sm font-bold">✓</span>
+                       </div>
+                       <p className="text-gray-700 leading-relaxed group-hover:text-gray-900 transition-colors">Member - Pakistan Carpet Manufacturers & Exporters Association (PCMEA)</p>
+                     </div>
+                     <div className="flex items-start space-x-4 group">
+                       <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-300">
+                         <span className="text-white text-sm font-bold">✓</span>
+                       </div>
+                       <p className="text-gray-700 leading-relaxed group-hover:text-gray-900 transition-colors">Strategic location in Lahore, Pakistan&apos;s trade hub</p>
+                     </div>
+                     <div className="flex items-start space-x-4 group">
+                       <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-300">
+                         <span className="text-white text-sm font-bold">✓</span>
+                       </div>
+                       <p className="text-gray-700 leading-relaxed group-hover:text-gray-900 transition-colors">Trusted supplier network: artisans, manufacturers, and exporters</p>
+                     </div>
+                     <div className="flex items-start space-x-4 group">
+                       <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-300">
+                         <span className="text-white text-sm font-bold">✓</span>
+                       </div>
+                       <p className="text-gray-700 leading-relaxed group-hover:text-gray-900 transition-colors">Commitment to ethical sourcing and sustainability</p>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
+
+             {/* Image and Our Story Section */}
+             <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+               {/* Weaving Image */}
+               <div className="animate-fade-in-up">
+                 <div className="aspect-[4/3] overflow-hidden rounded-2xl shadow-xl">
+                   <img 
+                     src="/rugs images/image 3.jpg" 
+                     alt="Traditional Pakistani rug weaving" 
+                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                   />
+                 </div>
+               </div>
+
+               {/* Our Story Card */}
+               <div className="animate-fade-in-up-delay">
+                 <div className="bg-white rounded-2xl shadow-xl p-8 hover-lift border border-gray-100">
+                   <h3 className="text-3xl font-bold text-gray-800 mb-6">Our Story</h3>
+                   <p className="text-gray-600 leading-relaxed mb-8">
+                     We partner directly with artisans and certified manufacturers across Pakistan. From the Himalayan ranges to the bustling markets of Lahore, our network enables us to source responsibly and deliver reliably—at scale—while preserving the authenticity that buyers value. Every shipment carries a commitment to quality and a promise of professional service.
+                   </p>
+
+                   {/* Statistics */}
+                   <div className="grid grid-cols-3 gap-4">
+                     <div className="bg-yellow-50 rounded-xl p-4 text-center hover:bg-yellow-100 transition-colors duration-300">
+                       <div className="text-3xl font-bold text-gray-800 mb-1">25+</div>
+                       <div className="text-sm text-gray-600">Countries</div>
+                     </div>
+                     <div className="bg-yellow-50 rounded-xl p-4 text-center hover:bg-yellow-100 transition-colors duration-300">
+                       <div className="text-3xl font-bold text-gray-800 mb-1">150+</div>
+                       <div className="text-sm text-gray-600">Clients</div>
+                     </div>
+                     <div className="bg-yellow-50 rounded-xl p-4 text-center hover:bg-yellow-100 transition-colors duration-300">
+                       <div className="text-3xl font-bold text-gray-800 mb-1">2021</div>
+                       <div className="text-sm text-gray-600">Since</div>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
 
       {/* Export Portfolio Section */}
-      <section id="products" className="py-16 bg-gray-50 scroll-mt-20">
+      <section id="products" className="py-16 md:py-24 bg-gradient-to-br from-white to-gray-50 scroll-mt-20">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-4xl font-bold text-gray-800 text-center mb-6">Our Export Portfolio</h2>
-            <p className="text-gray-600 text-center mb-12 max-w-3xl mx-auto">
-              We source our products directly from local manufacturers and artisans, ensuring authenticity and quality. 
-              Each product undergoes rigorous quality checks before export.
-            </p>
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <span className="inline-block px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-4 animate-fade-in-up">
+                OUR PRODUCTS
+              </span>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 mb-6 animate-fade-in-up-delay">
+                Our Export Portfolio
+              </h2>
+              <p className="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed animate-fade-in-up-delay-2">
+                We source our products directly from local manufacturers and artisans, ensuring authenticity and quality. 
+                Each product undergoes rigorous quality checks before export.
+              </p>
+              <div className="w-24 h-1 bg-blue-500 mx-auto rounded-full animate-shimmer mt-6"></div>
+            </div>
 
-            <div className="grid md:grid-cols-3 gap-8 mb-12">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-16">
               {/* Handmade Rugs */}
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">Handmade Rugs</h3>
-                <p className="text-gray-600 mb-4">Persian inspired, tribal, and modern designs with natural dyes.</p>
-                <span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm mb-4">Heritage</span>
+              <div className="group bg-white rounded-2xl shadow-xl p-6 lg:p-8 hover-lift border border-gray-100 animate-fade-in-up">
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-xl flex items-center justify-center mr-4">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-xl lg:text-2xl font-bold text-gray-800 group-hover:text-red-600 transition-colors">Handmade Rugs</h3>
+                    <span className="inline-block bg-gradient-to-r from-red-100 to-red-200 text-red-800 px-3 py-1 rounded-full text-xs font-medium">Heritage</span>
+                  </div>
+                </div>
                 
-                <div className="grid grid-cols-3 gap-2 mb-4">
-                  <img src="/rugs images/image 3.jpg" alt="Handmade Rug 1" className="aspect-square object-cover rounded" />
-                  <img src="/rugs images/image 4.jpg" alt="Handmade Rug 2" className="aspect-square object-cover rounded" />
-                  <img src="/rugs images/images (1).jfif" alt="Handmade Rug 3" className="aspect-square object-cover rounded" />
+                <p className="text-gray-600 mb-6 leading-relaxed">Persian inspired, tribal, and modern designs with natural dyes.</p>
+                
+                <div className="grid grid-cols-3 gap-3 mb-6">
+                  <div className="aspect-square overflow-hidden rounded-xl group-hover:scale-105 transition-transform duration-300">
+                    <img src="/rugs images/image 3.jpg" alt="Handmade Rug 1" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="aspect-square overflow-hidden rounded-xl group-hover:scale-105 transition-transform duration-300">
+                    <img src="/rugs images/image 4.jpg" alt="Handmade Rug 2" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="aspect-square overflow-hidden rounded-xl group-hover:scale-105 transition-transform duration-300">
+                    <img src="/rugs images/images (1).jfif" alt="Handmade Rug 3" className="w-full h-full object-cover" />
+                  </div>
                 </div>
 
-                <div className="space-y-2">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-xs">✓</span>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3 group/item">
+                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                      <span className="text-white text-xs font-bold">✓</span>
                     </div>
-                    <p className="text-sm text-gray-700">100% handmade craftsmanship</p>
+                    <p className="text-sm text-gray-700 group-hover/item:text-gray-900 transition-colors">100% handmade craftsmanship</p>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-xs">✓</span>
+                  <div className="flex items-center space-x-3 group/item">
+                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                      <span className="text-white text-xs font-bold">✓</span>
                     </div>
-                    <p className="text-sm text-gray-700">Heritage designs & patterns</p>
+                    <p className="text-sm text-gray-700 group-hover/item:text-gray-900 transition-colors">Heritage designs & patterns</p>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-xs">✓</span>
+                  <div className="flex items-center space-x-3 group/item">
+                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                      <span className="text-white text-xs font-bold">✓</span>
                     </div>
-                    <p className="text-sm text-gray-700">Bulk orders & custom sizes available</p>
+                    <p className="text-sm text-gray-700 group-hover/item:text-gray-900 transition-colors">Bulk orders & custom sizes available</p>
                   </div>
                 </div>
               </div>
 
               {/* Himalayan Pink Salt */}
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">Himalayan Pink Salt Products</h3>
-                <p className="text-gray-600 mb-4">Lamps, tiles, and edible salt.</p>
-                <span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm mb-4">Natural</span>
+              <div className="group bg-white rounded-2xl shadow-xl p-6 lg:p-8 hover-lift border border-gray-100 animate-fade-in-up-delay">
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-pink-600 rounded-xl flex items-center justify-center mr-4">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-xl lg:text-2xl font-bold text-gray-800 group-hover:text-pink-600 transition-colors">Himalayan Pink Salt</h3>
+                    <span className="inline-block bg-gradient-to-r from-pink-100 to-pink-200 text-pink-800 px-3 py-1 rounded-full text-xs font-medium">Natural</span>
+                  </div>
+                </div>
                 
-                <div className="grid grid-cols-3 gap-2 mb-4">
-                  <img src="/himalyan salt images/Himalayan-Salt-Products.jpg" alt="Himalayan Salt 1" className="aspect-square object-cover rounded" />
-                  <img src="/himalyan salt images/images (2).jfif" alt="Himalayan Salt 2" className="aspect-square object-cover rounded" />
-                  <img src="/himalyan salt images/images.jfif" alt="Himalayan Salt 3" className="aspect-square object-cover rounded" />
+                <p className="text-gray-600 mb-6 leading-relaxed">Lamps, tiles, and edible salt from the purest Himalayan sources.</p>
+                
+                <div className="grid grid-cols-3 gap-3 mb-6">
+                  <div className="aspect-square overflow-hidden rounded-xl group-hover:scale-105 transition-transform duration-300">
+                    <img src="/himalyan salt images/Himalayan-Salt-Products.jpg" alt="Himalayan Salt 1" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="aspect-square overflow-hidden rounded-xl group-hover:scale-105 transition-transform duration-300">
+                    <img src="/himalyan salt images/images (2).jfif" alt="Himalayan Salt 2" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="aspect-square overflow-hidden rounded-xl group-hover:scale-105 transition-transform duration-300">
+                    <img src="/himalyan salt images/images.jfif" alt="Himalayan Salt 3" className="w-full h-full object-cover" />
+                  </div>
                 </div>
 
-                <div className="space-y-2">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-xs">✓</span>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3 group/item">
+                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                      <span className="text-white text-xs font-bold">✓</span>
                     </div>
-                    <p className="text-sm text-gray-700">Salt lamps & candle holders</p>
+                    <p className="text-sm text-gray-700 group-hover/item:text-gray-900 transition-colors">Salt lamps & candle holders</p>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-xs">✓</span>
+                  <div className="flex items-center space-x-3 group/item">
+                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                      <span className="text-white text-xs font-bold">✓</span>
                     </div>
-                    <p className="text-sm text-gray-700">Cooking slabs & salt tiles</p>
+                    <p className="text-sm text-gray-700 group-hover/item:text-gray-900 transition-colors">Cooking slabs & salt tiles</p>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-xs">✓</span>
+                  <div className="flex items-center space-x-3 group/item">
+                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                      <span className="text-white text-xs font-bold">✓</span>
                     </div>
-                    <p className="text-sm text-gray-700">Edible salt (fine & coarse)</p>
+                    <p className="text-sm text-gray-700 group-hover/item:text-gray-900 transition-colors">Edible salt (fine & coarse)</p>
                   </div>
                 </div>
               </div>
 
               {/* Bamboo Baskets */}
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">Bamboo Baskets</h3>
-                <p className="text-gray-600 mb-4">Eco friendly and stylish.</p>
-                <span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm mb-4">Sustainable</span>
+              <div className="group bg-white rounded-2xl shadow-xl p-6 lg:p-8 hover-lift border border-gray-100 animate-fade-in-up-delay-2 md:col-span-2 lg:col-span-1">
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-xl flex items-center justify-center mr-4">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-xl lg:text-2xl font-bold text-gray-800 group-hover:text-green-600 transition-colors">Bamboo Baskets</h3>
+                    <span className="inline-block bg-gradient-to-r from-green-100 to-green-200 text-green-800 px-3 py-1 rounded-full text-xs font-medium">Sustainable</span>
+                  </div>
+                </div>
                 
-                <div className="grid grid-cols-3 gap-2 mb-4">
-                  <img src="/bamboo basktets/bamboo basktets 1.jfif" alt="Bamboo Basket 1" className="aspect-square object-cover rounded" />
-                  <img src="/bamboo basktets/image 2.jfif" alt="Bamboo Basket 2" className="aspect-square object-cover rounded" />
-                  <img src="/bamboo basktets/image 3.jfif" alt="Bamboo Basket 3" className="aspect-square object-cover rounded" />
+                <p className="text-gray-600 mb-6 leading-relaxed">Eco-friendly and stylish bamboo products for modern living.</p>
+                
+                <div className="grid grid-cols-3 gap-3 mb-6">
+                  <div className="aspect-square overflow-hidden rounded-xl group-hover:scale-105 transition-transform duration-300">
+                    <img src="/bamboo basktets/bamboo basktets 1.jfif" alt="Bamboo Basket 1" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="aspect-square overflow-hidden rounded-xl group-hover:scale-105 transition-transform duration-300">
+                    <img src="/bamboo basktets/image 2.jfif" alt="Bamboo Basket 2" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="aspect-square overflow-hidden rounded-xl group-hover:scale-105 transition-transform duration-300">
+                    <img src="/bamboo basktets/image 3.jfif" alt="Bamboo Basket 3" className="w-full h-full object-cover" />
+                  </div>
                 </div>
 
-                <div className="space-y-2">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-xs">✓</span>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3 group/item">
+                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                      <span className="text-white text-xs font-bold">✓</span>
                     </div>
-                    <p className="text-sm text-gray-700">100% natural bamboo</p>
+                    <p className="text-sm text-gray-700 group-hover/item:text-gray-900 transition-colors">100% natural bamboo</p>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-xs">✓</span>
+                  <div className="flex items-center space-x-3 group/item">
+                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                      <span className="text-white text-xs font-bold">✓</span>
                     </div>
-                    <p className="text-sm text-gray-700">Durable, reusable, and decorative</p>
+                    <p className="text-sm text-gray-700 group-hover/item:text-gray-900 transition-colors">Durable, reusable, and decorative</p>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-xs">✓</span>
+                  <div className="flex items-center space-x-3 group/item">
+                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                      <span className="text-white text-xs font-bold">✓</span>
                     </div>
-                    <p className="text-sm text-gray-700">Storage, utility, and decorative styles</p>
+                    <p className="text-sm text-gray-700 group-hover/item:text-gray-900 transition-colors">Storage, utility, and decorative styles</p>
                   </div>
                 </div>
               </div>
@@ -360,97 +593,127 @@ export default function Home() {
               We are trusted by Pakistan&apos;s leading trade and commerce authorities, ensuring compliance and credibility in all our export operations.
             </p>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-white rounded-lg shadow-lg p-8 border text-center">
-                <img 
-                  src="/membership logo/fbr logo.jpg" 
-                  alt="FBR Logo" 
-                  className="w-16 h-16 mx-auto mb-4 object-contain"
-                />
-                <h3 className="text-lg font-semibold text-gray-800">FBR Registered</h3>
-              </div>
+             <div className="flex flex-row md:grid md:grid-cols-3 gap-2 md:gap-8">
+               <div className="bg-white rounded-lg shadow-lg p-4 md:p-8 border text-center">
+                 <img 
+                   src="/membership logo/fbr logo.jpg" 
+                   alt="FBR Logo" 
+                   className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 object-contain"
+                 />
+                 <h3 className="text-sm md:text-lg font-semibold text-gray-800">FBR Registered</h3>
+               </div>
 
-              <div className="bg-white rounded-lg shadow-lg p-8 border text-center">
-                <img 
-                  src="/membership logo/lahore chamber logo.jpg" 
-                  alt="LCCI Logo" 
-                  className="w-16 h-16 mx-auto mb-4 object-contain"
-                />
-                <h3 className="text-lg font-semibold text-gray-800">Member - LCCI</h3>
-              </div>
+               <div className="bg-white rounded-lg shadow-lg p-4 md:p-8 border text-center">
+                 <img 
+                   src="/membership logo/lahore chamber logo.jpg" 
+                   alt="LCCI Logo" 
+                   className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 object-contain"
+                 />
+                 <h3 className="text-sm md:text-lg font-semibold text-gray-800">Member - LCCI</h3>
+               </div>
 
-              <div className="bg-white rounded-lg shadow-lg p-8 border text-center">
-                <img 
-                  src="/membership logo/pcmea carpet pakistan.jpg" 
-                  alt="PCMEA Logo" 
-                  className="w-16 h-16 mx-auto mb-4 object-contain"
-                />
-                <h3 className="text-lg font-semibold text-gray-800">Member - PCMEA</h3>
-              </div>
-            </div>
+               <div className="bg-white rounded-lg shadow-lg p-4 md:p-8 border text-center">
+                 <img 
+                   src="/membership logo/pcmea carpet pakistan.jpg" 
+                   alt="PCMEA Logo" 
+                   className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 object-contain"
+                 />
+                 <h3 className="text-sm md:text-lg font-semibold text-gray-800">Member - PCMEA</h3>
+               </div>
+             </div>
           </div>
         </div>
       </section>
 
-      {/* Contact Form Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-3xl font-bold text-gray-800 text-center mb-8">Get in Touch</h2>
-            <form className="space-y-6">
-              <div>
-                <input
-                  type="text"
-                  placeholder="Full Name"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                />
-              </div>
-              <div>
-                <input
-                  type="email"
-                  placeholder="Email Address"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                />
-        </div>
-              <div>
-                <input
-                  type="text"
-                  placeholder="Company / Business Name"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                />
-              </div>
-              <div>
-                <input
-                  type="text"
-                  placeholder="Country"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                />
-              </div>
-              <div>
-                <textarea
-                  placeholder="Product Inquiry / Message"
-                  rows={4}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-yellow-500 text-gray-800 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-600 transition-colors"
-              >
-                Send Inquiry
-              </button>
-              <p className="text-sm text-gray-600 text-center">
-                We usually respond within 1-2 business days.
-              </p>
-            </form>
-          </div>
-        </div>
-      </section>
+       {/* Contact Form Section */}
+       <section id="contact" className="py-16 md:py-24 bg-gradient-to-br from-gray-50 to-white scroll-mt-20">
+         <div className="container mx-auto px-4">
+           <div className="max-w-3xl mx-auto">
+             <div className="text-center mb-16">
+               <span className="inline-block px-4 py-2 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium mb-4 animate-fade-in-up">
+                 CONTACT US
+               </span>
+               <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6 animate-fade-in-up-delay">
+                 Get in Touch
+               </h2>
+               <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed animate-fade-in-up-delay-2">
+                 Ready to start your export journey with us? Let&apos;s discuss your requirements and explore opportunities together.
+               </p>
+               <div className="w-24 h-1 bg-yellow-500 mx-auto rounded-full animate-shimmer mt-6"></div>
+             </div>
+             
+             <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-gray-100 animate-fade-in-up">
+               <form className="space-y-8">
+                 <div className="grid md:grid-cols-2 gap-8">
+                   <div className="space-y-2">
+                     <label className="block text-sm font-medium text-gray-700">First Name</label>
+                     <input
+                       type="text"
+                       className="w-full py-3 bg-transparent text-gray-900 border-0 border-b border-gray-300 focus:border-yellow-500 focus:ring-0 focus:outline-none transition-colors duration-200 text-base placeholder-gray-400"
+                       placeholder=""
+                     />
+                   </div>
+                   <div className="space-y-2">
+                     <label className="block text-sm font-medium text-gray-700">Last Name</label>
+                     <input
+                       type="text"
+                       className="w-full py-3 bg-transparent text-gray-900 border-0 border-b border-gray-300 focus:border-yellow-500 focus:ring-0 focus:outline-none transition-colors duration-200 text-base placeholder-gray-400"
+                       placeholder=""
+                     />
+                   </div>
+                 </div>
+                 
+                 <div className="space-y-2">
+                   <label className="block text-sm font-medium text-gray-700">Email Address</label>
+                   <input
+                     type="email"
+                     className="w-full py-3 bg-transparent text-gray-900 border-0 border-b border-gray-300 focus:border-yellow-500 focus:ring-0 focus:outline-none transition-colors duration-200 text-base placeholder-gray-400"
+                     placeholder=""
+                   />
+                 </div>
+                 
+                 <div className="space-y-2">
+                   <label className="block text-sm font-medium text-gray-700">Subject</label>
+                   <input
+                     type="text"
+                     className="w-full py-3 bg-transparent text-gray-900 border-0 border-b border-gray-300 focus:border-yellow-500 focus:ring-0 focus:outline-none transition-colors duration-200 text-base placeholder-gray-400"
+                     placeholder=""
+                   />
+                 </div>
+                 
+                 <div className="space-y-2">
+                   <label className="block text-sm font-medium text-gray-700">Your Message</label>
+                   <textarea
+                     rows={5}
+                     className="w-full py-3 bg-transparent text-gray-900 border-0 border-b border-gray-300 focus:border-yellow-500 focus:ring-0 focus:outline-none transition-colors duration-200 text-base resize-none placeholder-gray-400"
+                     placeholder=""
+                   ></textarea>
+                 </div>
+                 
+                 <div className="pt-6">
+                   <button
+                     type="submit"
+                     className="bg-yellow-500 text-gray-800 py-3 px-8 rounded-lg text-lg font-semibold hover:bg-yellow-600 transition-all duration-300 focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
+                   >
+                     Submit
+                   </button>
+                 </div>
+                 
+                 <div className="text-center pt-4">
+                   <p className="text-sm text-gray-500">
+                     We usually respond within 1-2 business days
+                   </p>
+                 </div>
+               </form>
+             </div>
+           </div>
+         </div>
+       </section>
 
       {/* Footer */}
       <footer className="bg-gray-800 text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8">
+         <div className="container mx-auto px-4">
+           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <div className="flex items-center space-x-3 mb-4">
                 <img 
@@ -483,16 +746,6 @@ export default function Home() {
               </a>
             </div>
 
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-              <div className="space-y-2">
-                <a href="#" className="block text-gray-300 hover:text-white transition-colors">Home</a>
-                <a href="#" className="block text-gray-300 hover:text-white transition-colors">About</a>
-                <a href="#" className="block text-gray-300 hover:text-white transition-colors">Products</a>
-                <a href="#" className="block text-gray-300 hover:text-white transition-colors">Memberships</a>
-                <a href="#" className="block text-gray-300 hover:text-white transition-colors">Contact</a>
-              </div>
-            </div>
           </div>
         </div>
       </footer>
