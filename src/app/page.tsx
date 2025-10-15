@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
@@ -137,7 +136,7 @@ export default function Home() {
           <h1 className="text-7xl md:text-9xl font-bold mb-6 text-white drop-shadow-lg">Penta Traders</h1>
           <h2 className="text-5xl md:text-7xl font-bold mb-8 text-white drop-shadow-lg">From Pakistan to the World</h2>
           <p className="text-2xl md:text-3xl mb-10 max-w-4xl mx-auto text-white drop-shadow-md leading-relaxed">
-            Delivering Pakistan's finest products to global markets with authenticity, quality, and reliability.
+            Delivering Pakistan&apos;s finest products to global markets with authenticity, quality, and reliability.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <button className="bg-yellow-500 text-gray-800 px-10 py-5 rounded-lg text-xl font-bold hover:bg-yellow-600 transition-all transform hover:scale-105 shadow-lg">
@@ -196,7 +195,7 @@ export default function Home() {
                     <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                       <span className="text-white text-sm">✓</span>
                     </div>
-                    <p className="text-gray-700">Strategic location in Lahore, Pakistan's trade hub</p>
+                    <p className="text-gray-700">Strategic location in Lahore, Pakistan&apos;s trade hub</p>
                   </div>
                   <div className="flex items-start space-x-3">
                     <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -358,7 +357,7 @@ export default function Home() {
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Our Recognition & Trade Memberships</h2>
             <p className="text-gray-600 mb-12">
-              We are trusted by Pakistan's leading trade and commerce authorities, ensuring compliance and credibility in all our export operations.
+              We are trusted by Pakistan&apos;s leading trade and commerce authorities, ensuring compliance and credibility in all our export operations.
             </p>
 
             <div className="grid md:grid-cols-3 gap-8">
@@ -412,7 +411,7 @@ export default function Home() {
                   placeholder="Email Address"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                 />
-              </div>
+        </div>
               <div>
                 <input
                   type="text"
