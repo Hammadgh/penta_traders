@@ -7,6 +7,48 @@ export default function Home() {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  // Custom smooth scroll function with improved accuracy and smoothness
+  const smoothScrollTo = (element: HTMLElement) => {
+    const headerHeight = 80; // Fixed header height
+    const targetPosition = element.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+    const startPosition = window.pageYOffset;
+    const distance = targetPosition - startPosition;
+    const duration = 1500; // 1.5 seconds for very smooth scroll
+    let start: number | null = null;
+
+    const animation = (currentTime: number) => {
+      if (start === null) start = currentTime;
+      const timeElapsed = currentTime - start;
+      const progress = Math.min(timeElapsed / duration, 1);
+      const easedProgress = easeInOutCubic(progress);
+      const currentPosition = startPosition + (distance * easedProgress);
+      
+      window.scrollTo({
+        top: currentPosition,
+        behavior: 'auto' // Disable default smooth scroll
+      });
+      
+      if (progress < 1) {
+        requestAnimationFrame(animation);
+      }
+    };
+
+    requestAnimationFrame(animation);
+  };
+
+  // Improved easing function for smoother animation
+  const easeInOutCubic = (t: number) => {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  };
+
+  // Special scroll function for contact section
+  const scrollToContact = () => {
+    const contactSection = document.querySelector('#contact') as HTMLElement;
+    if (contactSection) {
+      smoothScrollTo(contactSection);
+    }
+  };
+
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
@@ -33,14 +75,7 @@ export default function Home() {
         e.preventDefault();
         const targetElement = document.querySelector(href) as HTMLElement;
         if (targetElement) {
-          const headerHeight = 80; // Approximate header height
-          const elementPosition = targetElement.offsetTop;
-          const offsetPosition = elementPosition - headerHeight;
-
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-          });
+          smoothScrollTo(targetElement);
         }
       }
     };
@@ -93,13 +128,9 @@ export default function Home() {
             {/* Desktop CTA Button */}
             <div className="hidden lg:block">
               <button 
-                onClick={() => {
-                  const contactSection = document.querySelector('section:has(#contact)') || document.querySelector('form');
-                  if (contactSection) {
-                    contactSection.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
-                className="bg-yellow-500 text-gray-800 px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors shadow-sm text-sm md:text-base"
+                onClick={scrollToContact}
+                className="text-white px-4 md:px-6 py-2 md:py-3 rounded-full font-semibold hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-lg text-sm md:text-base"
+                style={{ backgroundColor: '#023047' }}
               >
                 Request a Quote
               </button>
@@ -171,16 +202,14 @@ export default function Home() {
                 Memberships
               </a>
               <button 
-                className="bg-yellow-500 text-gray-800 px-4 py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors shadow-sm text-center mt-2"
+                className="text-white px-4 py-3 rounded-full font-semibold hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-lg text-center mt-2"
+                style={{ backgroundColor: '#023047' }}
                 onClick={() => {
                   const menu = document.getElementById('mobile-menu');
                   if (menu) menu.classList.add('hidden');
                   // Scroll to contact form
                   setTimeout(() => {
-                    const contactSection = document.querySelector('section:has(#contact)') || document.querySelector('form');
-                    if (contactSection) {
-                      contactSection.scrollIntoView({ behavior: 'smooth' });
-                    }
+                    scrollToContact();
                   }, 100);
                 }}
               >
@@ -192,7 +221,7 @@ export default function Home() {
       </header>
 
        {/* Hero Section */}
-       <section id="home" className="relative h-[70vh] md:h-screen flex items-center justify-center text-white overflow-hidden">
+       <section id="home" className="relative h-screen flex items-center justify-center text-white overflow-hidden">
          <div 
            className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/60 to-black/80"
            style={{ zIndex: 2 }}
@@ -228,10 +257,10 @@ export default function Home() {
          <div className="relative z-10 text-center max-w-6xl mx-auto px-4 animate-fade-in-up">
            <div className="mb-6">
               <span className="inline-block px-4 py-2 bg-yellow-500/20 backdrop-blur-sm rounded-full text-yellow-400 text-sm md:text-base font-medium mb-4">
-                🇵🇰 Trusted Pakistani Exporter
+                🇵🇰 Trusted Pakistani Exporter 🇵🇰
               </span>
            </div>
-           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-6 text-yellow-500 drop-shadow-2xl animate-slide-in-left">
+           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-6 text-yellow-500 drop-shadow-2xl animate-slide-in-left" style={{ textShadow: '0 0 30px rgba(255, 255, 255, 0.3)' }}>
              Penta Traders
            </h1>
            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-8 text-white drop-shadow-2xl animate-slide-in-right">
@@ -240,38 +269,24 @@ export default function Home() {
            <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl mb-12 max-w-5xl mx-auto text-white/95 drop-shadow-lg leading-relaxed animate-fade-in-up-delay">
              Delivering Pakistan&apos;s finest products to global markets with authenticity, quality, and reliability.
            </p>
-           <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center animate-fade-in-up-delay-2">
+            <div className="flex flex-row gap-3 justify-center animate-fade-in-up-delay-2">
              <button 
                onClick={() => {
                  const productsSection = document.querySelector('#products');
                  if (productsSection) {
-                   productsSection.scrollIntoView({ behavior: 'smooth' });
+                   smoothScrollTo(productsSection as HTMLElement);
                  }
                }}
-               className="group bg-yellow-500 text-gray-800 px-8 md:px-10 py-4 md:py-5 rounded-xl text-lg md:text-xl font-bold hover:bg-yellow-400 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 shadow-2xl hover:shadow-yellow-500/25"
+               className="bg-yellow-500 text-gray-900 px-6 py-3 rounded-full text-base font-semibold hover:bg-yellow-600 transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
              >
-               <span className="flex items-center justify-center gap-2">
-                 Explore Our Exports
-                 <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                 </svg>
-               </span>
+               Explore Our Exports
              </button>
              <button 
-               onClick={() => {
-                 const contactSection = document.querySelector('section:has(#contact)') || document.querySelector('form');
-                 if (contactSection) {
-                   contactSection.scrollIntoView({ behavior: 'smooth' });
-                 }
-               }}
-               className="group bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 px-8 md:px-10 py-4 md:py-5 rounded-xl text-lg md:text-xl font-bold hover:bg-white/20 hover:border-white/50 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 shadow-2xl"
+               onClick={scrollToContact}
+               className="text-white px-6 py-3 rounded-full text-base font-semibold hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:ring-2 focus:ring-offset-2"
+               style={{ backgroundColor: '#023047' }}
              >
-               <span className="flex items-center justify-center gap-2">
-                 Request a Quote
-                 <svg className="w-5 h-5 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                 </svg>
-               </span>
+               Request a Quote
              </button>
            </div>
          </div>
@@ -399,6 +414,47 @@ export default function Home() {
          </div>
        </section>
 
+      {/* Mission & Vision Section */}
+      <section className="py-16 md:py-24 bg-gradient-to-br from-gray-50 to-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-3xl shadow-xl p-8 md:p-12">
+              <div className="grid md:grid-cols-2 gap-8">
+                {/* Mission Card */}
+                <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                  <div className="flex items-start space-x-4 mb-6">
+                    <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-800">Mission</h3>
+                  </div>
+                  <p className="text-gray-600 leading-relaxed">
+                    To represent Pakistan&apos;s craftsmanship, natural resources, and innovation in the global marketplace while building long-term trade partnerships based on trust.
+                  </p>
+                </div>
+
+                {/* Vision Card */}
+                <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                  <div className="flex items-start space-x-4 mb-6">
+                    <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-800">Vision</h3>
+                  </div>
+                  <p className="text-gray-600 leading-relaxed">
+                    To become a leading exporter from Pakistan recognized for authentic products, professional services, and global market reach.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Export Portfolio Section */}
       <section id="products" className="py-16 md:py-24 bg-gradient-to-br from-white to-gray-50 scroll-mt-20">
         <div className="container mx-auto px-4">
@@ -448,20 +504,20 @@ export default function Home() {
 
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3 group/item">
-                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
-                      <span className="text-white text-xs font-bold">✓</span>
+                    <div className="w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                      <span className="text-gray-700 text-xs font-bold">✓</span>
                     </div>
                     <p className="text-sm text-gray-700 group-hover/item:text-gray-900 transition-colors">100% handmade craftsmanship</p>
                   </div>
                   <div className="flex items-center space-x-3 group/item">
-                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
-                      <span className="text-white text-xs font-bold">✓</span>
+                    <div className="w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                      <span className="text-gray-700 text-xs font-bold">✓</span>
                     </div>
                     <p className="text-sm text-gray-700 group-hover/item:text-gray-900 transition-colors">Heritage designs & patterns</p>
                   </div>
                   <div className="flex items-center space-x-3 group/item">
-                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
-                      <span className="text-white text-xs font-bold">✓</span>
+                    <div className="w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                      <span className="text-gray-700 text-xs font-bold">✓</span>
                     </div>
                     <p className="text-sm text-gray-700 group-hover/item:text-gray-900 transition-colors">Bulk orders & custom sizes available</p>
                   </div>
@@ -498,20 +554,20 @@ export default function Home() {
 
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3 group/item">
-                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
-                      <span className="text-white text-xs font-bold">✓</span>
+                    <div className="w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                      <span className="text-gray-700 text-xs font-bold">✓</span>
                     </div>
                     <p className="text-sm text-gray-700 group-hover/item:text-gray-900 transition-colors">Salt lamps & candle holders</p>
                   </div>
                   <div className="flex items-center space-x-3 group/item">
-                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
-                      <span className="text-white text-xs font-bold">✓</span>
+                    <div className="w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                      <span className="text-gray-700 text-xs font-bold">✓</span>
                     </div>
                     <p className="text-sm text-gray-700 group-hover/item:text-gray-900 transition-colors">Cooking slabs & salt tiles</p>
                   </div>
                   <div className="flex items-center space-x-3 group/item">
-                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
-                      <span className="text-white text-xs font-bold">✓</span>
+                    <div className="w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                      <span className="text-gray-700 text-xs font-bold">✓</span>
                     </div>
                     <p className="text-sm text-gray-700 group-hover/item:text-gray-900 transition-colors">Edible salt (fine & coarse)</p>
                   </div>
@@ -548,20 +604,20 @@ export default function Home() {
 
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3 group/item">
-                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
-                      <span className="text-white text-xs font-bold">✓</span>
+                    <div className="w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                      <span className="text-gray-700 text-xs font-bold">✓</span>
                     </div>
                     <p className="text-sm text-gray-700 group-hover/item:text-gray-900 transition-colors">100% natural bamboo</p>
                   </div>
                   <div className="flex items-center space-x-3 group/item">
-                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
-                      <span className="text-white text-xs font-bold">✓</span>
+                    <div className="w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                      <span className="text-gray-700 text-xs font-bold">✓</span>
                     </div>
                     <p className="text-sm text-gray-700 group-hover/item:text-gray-900 transition-colors">Durable, reusable, and decorative</p>
                   </div>
                   <div className="flex items-center space-x-3 group/item">
-                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
-                      <span className="text-white text-xs font-bold">✓</span>
+                    <div className="w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                      <span className="text-gray-700 text-xs font-bold">✓</span>
                     </div>
                     <p className="text-sm text-gray-700 group-hover/item:text-gray-900 transition-colors">Storage, utility, and decorative styles</p>
                   </div>
@@ -642,110 +698,157 @@ export default function Home() {
                <div className="w-24 h-1 bg-yellow-500 mx-auto rounded-full animate-shimmer mt-6"></div>
              </div>
              
-             <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-gray-100 animate-fade-in-up">
-               <form className="space-y-8">
-                 <div className="grid md:grid-cols-2 gap-8">
-                   <div className="space-y-2">
-                     <label className="block text-sm font-medium text-gray-700">First Name</label>
-                     <input
-                       type="text"
-                       className="w-full py-3 bg-transparent text-gray-900 border-0 border-b border-gray-300 focus:border-yellow-500 focus:ring-0 focus:outline-none transition-colors duration-200 text-base placeholder-gray-400"
-                       placeholder=""
-                     />
-                   </div>
-                   <div className="space-y-2">
-                     <label className="block text-sm font-medium text-gray-700">Last Name</label>
-                     <input
-                       type="text"
-                       className="w-full py-3 bg-transparent text-gray-900 border-0 border-b border-gray-300 focus:border-yellow-500 focus:ring-0 focus:outline-none transition-colors duration-200 text-base placeholder-gray-400"
-                       placeholder=""
-                     />
-                   </div>
-                 </div>
-                 
-                 <div className="space-y-2">
-                   <label className="block text-sm font-medium text-gray-700">Email Address</label>
-                   <input
-                     type="email"
-                     className="w-full py-3 bg-transparent text-gray-900 border-0 border-b border-gray-300 focus:border-yellow-500 focus:ring-0 focus:outline-none transition-colors duration-200 text-base placeholder-gray-400"
-                     placeholder=""
-                   />
-                 </div>
-                 
-                 <div className="space-y-2">
-                   <label className="block text-sm font-medium text-gray-700">Subject</label>
-                   <input
-                     type="text"
-                     className="w-full py-3 bg-transparent text-gray-900 border-0 border-b border-gray-300 focus:border-yellow-500 focus:ring-0 focus:outline-none transition-colors duration-200 text-base placeholder-gray-400"
-                     placeholder=""
-                   />
-                 </div>
-                 
-                 <div className="space-y-2">
-                   <label className="block text-sm font-medium text-gray-700">Your Message</label>
-                   <textarea
-                     rows={5}
-                     className="w-full py-3 bg-transparent text-gray-900 border-0 border-b border-gray-300 focus:border-yellow-500 focus:ring-0 focus:outline-none transition-colors duration-200 text-base resize-none placeholder-gray-400"
-                     placeholder=""
-                   ></textarea>
-                 </div>
-                 
-                 <div className="pt-6">
-                   <button
-                     type="submit"
-                     className="bg-yellow-500 text-gray-800 py-3 px-8 rounded-lg text-lg font-semibold hover:bg-yellow-600 transition-all duration-300 focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
-                   >
-                     Submit
-                   </button>
-                 </div>
-                 
-                 <div className="text-center pt-4">
-                   <p className="text-sm text-gray-500">
-                     We usually respond within 1-2 business days
-                   </p>
-                 </div>
-               </form>
-             </div>
+             <form 
+               action="https://api.web3forms.com/submit" 
+               method="POST" 
+               className="space-y-6 max-w-6xl mx-auto animate-fade-in-up"
+             >
+               {/* Web3Forms Hidden Fields */}
+               <input type="hidden" name="access_key" value="5a44e3e2-3214-4181-bfd7-bf04447a5e53" />
+               <input type="hidden" name="subject" value="New Inquiry – Penta Traders" />
+               <input type="hidden" name="from_name" value="Penta Traders Website" />
+               <input type="hidden" name="redirect" value="/?success=1#contact" />
+               <div className="space-y-1">
+                 <label className="block text-sm font-medium text-gray-700">Full Name</label>
+                 <input
+                   type="text"
+                   name="name"
+                   required
+                   className="w-full py-2 bg-transparent text-gray-900 border-0 border-b border-gray-300 focus:border-gray-500 focus:ring-0 focus:outline-none transition-colors duration-200 text-base"
+                   placeholder=""
+                 />
+               </div>
+               
+               <div className="space-y-1">
+                 <label className="block text-sm font-medium text-gray-700">Email Address</label>
+                 <input
+                   type="email"
+                   name="email"
+                   required
+                   className="w-full py-2 bg-transparent text-gray-900 border-0 border-b border-gray-300 focus:border-gray-500 focus:ring-0 focus:outline-none transition-colors duration-200 text-base"
+                   placeholder=""
+                 />
+               </div>
+               
+               <div className="space-y-1">
+                 <label className="block text-sm font-medium text-gray-700">Company / Business Name</label>
+                 <input
+                   type="text"
+                   name="company"
+                   className="w-full py-2 bg-transparent text-gray-900 border-0 border-b border-gray-300 focus:border-gray-500 focus:ring-0 focus:outline-none transition-colors duration-200 text-base"
+                   placeholder=""
+                 />
+               </div>
+               
+               <div className="space-y-1">
+                 <label className="block text-sm font-medium text-gray-700">Country</label>
+                 <input
+                   type="text"
+                   name="country"
+                   className="w-full py-2 bg-transparent text-gray-900 border-0 border-b border-gray-300 focus:border-gray-500 focus:ring-0 focus:outline-none transition-colors duration-200 text-base"
+                   placeholder=""
+                 />
+               </div>
+               
+               <div className="space-y-1">
+                 <label className="block text-sm font-medium text-gray-700">Product Inquiry / Message</label>
+                 <textarea
+                   name="message"
+                   required
+                   rows={3}
+                   className="w-full py-2 bg-transparent text-gray-900 border-0 border-b border-gray-300 focus:border-gray-500 focus:ring-0 focus:outline-none transition-colors duration-200 text-base resize-y"
+                   placeholder=""
+                 ></textarea>
+               </div>
+               
+               <div className="pt-4">
+                 <button
+                   type="submit"
+                   className="w-full text-white py-4 px-8 rounded-full text-lg font-semibold transition-all duration-300 hover:opacity-90 hover:scale-105 focus:ring-2 focus:ring-offset-2 shadow-lg hover:shadow-xl"
+                   style={{ backgroundColor: '#023047' }}
+                 >
+                   Send Inquiry
+                 </button>
+               </div>
+               
+               <div className="text-center pt-4">
+                 <p className="text-sm text-gray-500">
+                   We usually respond within 1-2 business days
+                 </p>
+               </div>
+             </form>
            </div>
          </div>
        </section>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white py-12">
-         <div className="container mx-auto px-4">
-           <div className="grid md:grid-cols-2 gap-8">
+      <footer className="bg-gradient-to-br from-gray-50 to-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Left Column - Company Info */}
             <div>
               <div className="flex items-center space-x-3 mb-4">
                 <img 
                   src="/Penta Traders logo.png" 
                   alt="Penta Traders Logo" 
-                  className="w-8 h-8 object-contain"
+                  className="w-16 h-16 object-contain"
                 />
-                <span className="text-xl font-bold">Penta Traders</span>
               </div>
-              <p className="text-gray-300 mb-4">
+              <p className="text-gray-700 mb-6 max-w-md">
                 Trusted exporter from Pakistan. Authentic products, professional service, and global reach.
               </p>
               <div className="flex space-x-4">
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">Facebook</a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">Instagram</a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">LinkedIn</a>
+                <a href="mailto:pentatraders@hotmail.com" className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors">
+                  <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </a>
+                <a href="https://www.facebook.com/official.pentatraders" target="_blank" rel="noopener noreferrer" className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors">
+                  <svg className="w-4 h-4 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  </svg>
+                </a>
+                <a href="https://www.instagram.com/pentatraders" target="_blank" rel="noopener noreferrer" className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors">
+                  <svg className="w-4 h-4 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                </a>
               </div>
-              <p className="text-gray-400 text-sm mt-4">© 2025 Penta Traders. All rights reserved.</p>
             </div>
 
+            {/* Middle Column - Contact */}
             <div>
-              <h3 className="text-lg font-semibold mb-4">Contact</h3>
-              <p className="text-gray-300 mb-2">
-                2nd Floor, 27/10, Empress Road,<br />
-                Behind PSO Pump,<br />
-                Lahore, Pakistan
+              <h3 className="text-lg font-semibold mb-4 text-gray-800 relative">
+                Contact
+                <div className="absolute bottom-0 left-0 w-12 h-1 bg-yellow-500"></div>
+              </h3>
+              <p className="text-gray-700 mb-2">
+                Address: 27/10 Empress Road, Lahore, Pakistan
               </p>
-              <a href="mailto:pentatraders@hotmail.com" className="text-yellow-400 hover:text-yellow-300 transition-colors">
-                pentatraders@hotmail.com
+              <a href="mailto:pentatraders@hotmail.com" className="text-gray-700 hover:text-gray-900 transition-colors">
+                Email: pentatraders@hotmail.com
               </a>
             </div>
 
+            {/* Right Column - Navigation */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4 text-gray-800 relative">
+                Navigation
+                <div className="absolute bottom-0 left-0 w-12 h-1 bg-yellow-500"></div>
+              </h3>
+              <ul className="flex flex-wrap gap-4">
+                <li><a href="#home" className="text-gray-700 hover:text-gray-900 transition-colors smooth-scroll">Home</a></li>
+                <li><a href="#about" className="text-gray-700 hover:text-gray-900 transition-colors smooth-scroll">About</a></li>
+                <li><a href="#products" className="text-gray-700 hover:text-gray-900 transition-colors smooth-scroll">Products</a></li>
+                <li><a href="#memberships" className="text-gray-700 hover:text-gray-900 transition-colors smooth-scroll">Memberships</a></li>
+                <li><a href="#contact" className="text-gray-700 hover:text-gray-900 transition-colors smooth-scroll">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          {/* Separator Line */}
+          <div className="border-t border-gray-300 mt-8 pt-8">
+            <p className="text-gray-700 text-sm">© 2025 Penta Traders. All rights reserved.</p>
           </div>
         </div>
       </footer>
