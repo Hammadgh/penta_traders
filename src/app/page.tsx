@@ -249,9 +249,8 @@ export default function Home() {
                  WebkitTransform: 'translateZ(0)',
                  backfaceVisibility: 'hidden',
                  WebkitBackfaceVisibility: 'hidden',
-                 WebkitPlaysInline: true,
                  pointerEvents: 'none'
-               }}
+               } as React.CSSProperties}
              >
                <source src="/banner%20video.mp4" type="video/mp4" />
              </video>
