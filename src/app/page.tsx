@@ -7,25 +7,37 @@ export default function Home() {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Custom smooth scroll function with improved accuracy and smoothness
+  // Smooth scroll function with precise positioning for mobile and desktop
   const smoothScrollTo = (element: HTMLElement) => {
-    const headerHeight = 80; // Fixed header height
-    const targetPosition = element.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+    // Dynamic header height based on screen size
+    const isMobile = window.innerWidth < 768;
+    const headerHeight = isMobile ? 20 : 80; // Very small offset for mobile
+    
+    const elementRect = element.getBoundingClientRect();
+    const targetPosition = elementRect.top + window.pageYOffset - headerHeight;
+    
+    // Use custom smooth scroll for better control
     const startPosition = window.pageYOffset;
     const distance = targetPosition - startPosition;
-    const duration = 1500; // 1.5 seconds for very smooth scroll
+    const duration = 600; // Smooth 600ms duration
     let start: number | null = null;
 
     const animation = (currentTime: number) => {
       if (start === null) start = currentTime;
       const timeElapsed = currentTime - start;
       const progress = Math.min(timeElapsed / duration, 1);
+      
+      // Smooth easing function
+      const easeInOutCubic = (t: number) => {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      };
+      
       const easedProgress = easeInOutCubic(progress);
       const currentPosition = startPosition + (distance * easedProgress);
       
       window.scrollTo({
         top: currentPosition,
-        behavior: 'auto' // Disable default smooth scroll
+        behavior: 'auto'
       });
       
       if (progress < 1) {
@@ -34,11 +46,6 @@ export default function Home() {
     };
 
     requestAnimationFrame(animation);
-  };
-
-  // Improved easing function for smoother animation
-  const easeInOutCubic = (t: number) => {
-    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   };
 
   // Special scroll function for contact section
@@ -207,10 +214,8 @@ export default function Home() {
                 onClick={() => {
                   const menu = document.getElementById('mobile-menu');
                   if (menu) menu.classList.add('hidden');
-                  // Scroll to contact form
-                  setTimeout(() => {
-                    scrollToContact();
-                  }, 100);
+                  // Scroll to contact form instantly
+                  scrollToContact();
                 }}
               >
                 Request a Quote
@@ -221,7 +226,7 @@ export default function Home() {
       </header>
 
        {/* Hero Section */}
-       <section id="home" className="relative h-screen flex items-center justify-center text-white overflow-hidden">
+       <section id="home" className="relative h-[90vh] md:h-screen flex items-center justify-center text-white overflow-hidden">
          <div 
            className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/60 to-black/80"
            style={{ zIndex: 2 }}
@@ -236,12 +241,16 @@ export default function Home() {
                playsInline
                preload="auto"
                poster="/home-banner.gif"
+               controls={false}
+               disablePictureInPicture
                className="w-full h-full object-cover animate-pulse-slow"
                style={{
                  transform: 'translateZ(0)',
                  WebkitTransform: 'translateZ(0)',
                  backfaceVisibility: 'hidden',
-                 WebkitBackfaceVisibility: 'hidden'
+                 WebkitBackfaceVisibility: 'hidden',
+                 WebkitPlaysInline: true,
+                 pointerEvents: 'none'
                }}
              >
                <source src="/banner%20video.mp4" type="video/mp4" />
@@ -257,7 +266,7 @@ export default function Home() {
          <div className="relative z-10 text-center max-w-6xl mx-auto px-4 animate-fade-in-up">
            <div className="mb-6">
               <span className="inline-block px-4 py-2 bg-yellow-500/20 backdrop-blur-sm rounded-full text-yellow-400 text-sm md:text-base font-medium mb-4">
-                🇵🇰 Trusted Pakistani Exporter 🇵🇰
+                🇵🇰 Trusted Pakistani Exporter
               </span>
            </div>
            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-6 text-yellow-500 drop-shadow-2xl animate-slide-in-left" style={{ textShadow: '0 0 30px rgba(255, 255, 255, 0.3)' }}>

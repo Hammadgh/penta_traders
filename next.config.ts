@@ -15,8 +15,8 @@ const nextConfig: NextConfig = {
   // Enable React strict mode for better development experience
   reactStrictMode: true,
   
-  // Output configuration for static export compatibility
-  output: 'standalone',
+  // Output configuration for static export
+  output: 'export',
   
   // Ensure compatibility with deployment platforms
   trailingSlash: false,
