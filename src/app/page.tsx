@@ -277,7 +277,7 @@ export default function Home() {
            <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl mb-12 max-w-5xl mx-auto text-white/95 drop-shadow-lg leading-relaxed animate-fade-in-up-delay">
              Delivering Pakistan&apos;s finest products to global markets with authenticity, quality, and reliability.
            </p>
-            <div className="flex flex-row gap-3 justify-center animate-fade-in-up-delay-2">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center animate-fade-in-up-delay-2 px-4">
              <button 
                onClick={() => {
                  const productsSection = document.querySelector('#products');
@@ -285,13 +285,13 @@ export default function Home() {
                    smoothScrollTo(productsSection as HTMLElement);
                  }
                }}
-               className="bg-yellow-500 text-gray-900 px-6 py-3 rounded-full text-base font-semibold hover:bg-yellow-600 transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
+               className="bg-yellow-500 text-gray-900 px-4 sm:px-6 py-3 rounded-full text-sm sm:text-base font-semibold hover:bg-yellow-600 transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 w-full sm:w-auto min-w-0"
              >
                Explore Our Exports
              </button>
              <button 
                onClick={scrollToContact}
-               className="text-white px-6 py-3 rounded-full text-base font-semibold hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:ring-2 focus:ring-offset-2"
+               className="text-white px-4 sm:px-6 py-3 rounded-full text-sm sm:text-base font-semibold hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:ring-2 focus:ring-offset-2 w-full sm:w-auto min-w-0"
                style={{ backgroundColor: '#023047' }}
              >
                Request a Quote
